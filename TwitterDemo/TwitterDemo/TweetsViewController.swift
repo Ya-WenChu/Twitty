@@ -55,6 +55,19 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         TwitterClient.sharedInstance?.logout()
     }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
+        
+        cell.tweet = tweets[indexPath.row]
+        //let tweet = tweets[indexPath.row]
+        
+         //cell.screenLabel.text = tweet.screenName
+        //let tweet = tweets[indexPath.row]
+        
+        return cell
+    }
+    
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let tweets = tweets{
@@ -64,14 +77,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCell", for: indexPath) as! TableViewCell
-        
-        let tweet = tweets[indexPath.row]
-        
-        return cell
-    }
-    
+   
 
     /*
     // MARK: - Navigation
