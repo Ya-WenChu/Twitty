@@ -15,18 +15,40 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var screenLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var favCount: UILabel!
+    @IBOutlet weak var retweetCount: UILabel!
+    
+    @IBOutlet weak var favButton: UIButton!
+    @IBOutlet weak var retweetButton: UIButton!
     
     var tweet: Tweet!{
         didSet{
             nameLabel.text = tweet.name
             thumbimageView.setImageWith(tweet.profileImageUrl!)
             screenLabel.text = tweet.screenName
-            descriptionLabel.text = tweet.description
-            timeLabel.text = tweet.timestamp as String
+            descriptionLabel.text = tweet.text!
+            favCount.text = ("\(tweet.favoritesCount)")
+            retweetCount.text = ("\(tweet.retweetCount)")
+            
+            if(tweet.retweeted! == true)
+            {
+                retweetButton.setImage(UIImage(named: "retweet-icon-green.png"), for: UIControlState.normal)
+            }else{
+                retweetButton.setImage(UIImage(named: "retweet-icon.png"), for: UIControlState.normal)
+            }
             
             
+            if(tweet.favorited! == true)
+            {
+                favButton.setImage(UIImage(named: "favor-icon-red.png"), for: UIControlState.normal)
+            }else{
+                favButton.setImage(UIImage(named: "favor-icon.png"), for: UIControlState.normal)
+            }
         }
+        
     }
+    
+    
     
     
     override func awakeFromNib() {

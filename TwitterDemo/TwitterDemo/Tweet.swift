@@ -14,10 +14,8 @@ class Tweet: NSObject {
     var screenName: String?
     var profileImageUrl: URL?
     var text: String?
-    
     var timestamp: Date?
-    
-    var idStr: String?
+    var id: Int?
     var retweetCount: Int = 0
     var favoritesCount: Int = 0
     var retweeted: Bool?
@@ -30,21 +28,21 @@ class Tweet: NSObject {
         favoritesCount = (dictionary["favourites_count"] as? Int) ?? 0
         name = dictionary.value(forKeyPath: "user.name") as! String?
         
-        let imageURLString = dictionary["user.profile_image_url_https"] as? String
-        if imageURLString != nil{
-            profileImageUrl = URL(string: imageURLString!)!
-        }else{
-            profileImageUrl = nil
-        }
-        //profileImageUrl = dictionary.value(forKeyPath: "user.profile_image_url_https") as! String?
+        let user = dictionary["user"] as! NSDictionary
+        
+        let imgURL = user["profile_image_url_https"] as? String
+        profileImageUrl = URL(string: imgURL!)
+        
+        
         
         screenName = dictionary.value(forKeyPath: "user.screen_name")
          as! String?
         retweeted = dictionary["retweeted"] as? Bool
         favorited = dictionary["favorited"] as? Bool
-        idStr = dictionary["id_str"] as? String
+        id = dictionary["id"] as? Int
         
-        
+        self.retweeted = dictionary["retweeted"] as? Bool
+        self.favorited = dictionary["favorited"] as? Bool
         
         
         let timestampString = dictionary["created_at"] as? String
@@ -56,13 +54,12 @@ class Tweet: NSObject {
             formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
             timestamp = formatter.date(from: timestampString as String )! as Date
             
-            //timestamp = formatter.string(from: times?)
-            
+
             
         }
         
         
-        user = User.init(dictionary: dictionary.value(forKey: "user") as! NSDictionary)
+
         
         
     }

@@ -21,8 +21,9 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 100
+        tableView.estimatedRowHeight = 120
         
+
         
         TwitterClient.sharedInstance?.homeTimeLine(success: { (tweets: [Tweet]) in
             self.tweets = tweets
@@ -56,17 +57,15 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCell", for: indexPath) as! TableViewCell
         
         cell.tweet = tweets[indexPath.row]
-        //let tweet = tweets[indexPath.row]
         
-         //cell.screenLabel.text = tweet.screenName
-        //let tweet = tweets[indexPath.row]
         
         return cell
     }
     
+
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -75,6 +74,48 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }else{
             return 0
         }
+    }
+    
+    @IBAction func retweet(_ sender: Any) {
+        var indexPath = tableView.indexPath(for: (sender as! UIButton).superview?.superview as! UITableViewCell)
+        let tweet = tweets[(indexPath?.row)!]
+        TwitterClient.sharedInstance?.retweet(id: tweet.id!)
+        let cell = (sender as! UIButton).superview?.superview as! TableViewCell
+        sleep(UInt32(1))
+        
+        TwitterClient.sharedInstance?.homeTimeLine(
+        success:
+            {(tweets: [Tweet]) in
+                self.tweets = tweets
+                self.tableView.reloadData()
+                 },
+        failure:
+            {( error: Error) in
+                print("Error: \(error.localizedDescription)")
+        })
+        cell.retweetButton.setImage(UIImage(named: "retweet-icon-green.png"), for: UIControlState.normal)
+        tweet.retweeted = true;
+        tableView.reloadData()
+    }
+    
+    @IBAction func favv(_ sender: Any) {
+        var indexPath = tableView.indexPath(for: (sender as! UIButton).superview?.superview as! UITableViewCell)
+        let tweet = tweets[(indexPath?.row)!]
+        TwitterClient.sharedInstance?.favorite(id: tweet.id!)
+        sleep(UInt32(1))
+        
+        TwitterClient.sharedInstance?.homeTimeLine(
+        success:
+            {(tweets: [Tweet]) in
+                self.tweets = tweets
+                self.tableView.reloadData()
+        },
+        failure:
+            {( error: Error) in
+                print("Error: \(error.localizedDescription)")
+        })
+        tweet.favorited = true
+        self.tableView.reloadData()
     }
     
    
