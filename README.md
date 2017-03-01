@@ -58,7 +58,7 @@ Describe any challenges encountered while building the app.
     
     
     
-   # Project 5 - *Twitty*
+# Project 5 - *Twitty*
 
 Time spent: **X** hours spent in total
 
