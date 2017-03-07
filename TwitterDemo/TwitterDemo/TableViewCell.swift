@@ -30,6 +30,11 @@ class TableViewCell: UITableViewCell {
             favCount.text = ("\(tweet.favoritesCount)")
             retweetCount.text = ("\(tweet.retweetCount)")
             
+            let timeAgo = Int(Date().timeIntervalSince(tweet.timestamp!))
+            let ago = convertSecondToDateAgo(seconds: timeAgo)
+            timeLabel.text = ago
+            
+            
             if(tweet.retweeted! == true)
             {
                 retweetButton.setImage(UIImage(named: "retweet-icon-green.png"), for: UIControlState.normal)
@@ -71,5 +76,23 @@ class TableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func convertSecondToDateAgo(seconds: Int) -> String {
+        var result: String?
+        if(seconds/60 <= 59)
+        {
+            result = "\(seconds/60) m"
+        }
+        else if (seconds/3600 <= 23)
+        {
+            result = "\(seconds/3600) h"
+        }
+        else
+        {
+            result = "\(seconds/216000) d"
+        }
+        return result!
+    }
+    
 
 }

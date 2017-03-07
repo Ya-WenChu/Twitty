@@ -119,6 +119,15 @@ class TwitterClient: BDBOAuth1SessionManager {
                 faliure(error)
         }
     }
+    func postThis(text: String, success: @escaping (Tweet) -> (), faliure: @escaping (Error) -> ()) {
+        post("1.1/statuses/update.json", parameters: [ "status": text], progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            let response = response as! NSDictionary
+            let tweet = Tweet.init(dictionary: response)
+            success(tweet)
+        }) { (task: URLSessionDataTask?, error: Error) in
+            faliure(error)
+        }
+    }
     
     
 

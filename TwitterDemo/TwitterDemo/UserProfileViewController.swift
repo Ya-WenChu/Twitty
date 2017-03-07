@@ -9,9 +9,26 @@
 import UIKit
 
 class UserProfileViewController: UIViewController {
+    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var screenName: UILabel!
+    @IBOutlet weak var userName: UILabel!
+    @IBOutlet weak var numTweets: UILabel!
+    @IBOutlet weak var numFollowing: UILabel!
+    @IBOutlet weak var numFollowers: UILabel!
+    
+    var user: User?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userName.text = user!.name! as String
+        profileImage.setImageWith(user!.picUrl!)
+        screenName.text = "@\(user!.screenname!)"
+        numTweets.text = String(user!.tweetCount!)
+        numFollowers.text = String(user!.followerCount!)
+        numFollowing.text = String(user!.followeringCount!)
+        
+        
 
         // Do any additional setup after loading the view.
     }

@@ -26,7 +26,8 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         userName.text = User.currentUser!.name! as String?
         screenName.text = "@\(User.currentUser!.screenname!)"
         profileImage.setImageWith((User.currentUser!.picUrl!))
-        // Do any additional setup after loading the view.
+        tweetTextView.becomeFirstResponder()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,10 +35,18 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBAction func onCancel(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+
+    }
+    
+    
+    
     @IBAction func onTweetButton(_ sender: Any) {
         if(!((tweetTextView.text?.isEmpty)!))
         {
-            TwitterClient.sharedInstance?.reply(id: "", text: tweetTextView.text!, success: { (response: Tweet) in
+            TwitterClient.sharedInstance?.postThis(text: tweetTextView.text!, success: { (response: Tweet) in
                 self.dismiss(animated: true, completion: nil)
             }, faliure: { (error: Error) in
                 let errorAlertController = UIAlertController(title: "Error!", message: "Already replied to this Tweet", preferredStyle: .alert)
