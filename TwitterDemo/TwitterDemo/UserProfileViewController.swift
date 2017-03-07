@@ -21,7 +21,7 @@ class UserProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        userName.text = user!.name! as String
+        userName.text = user!.name! as String?
         profileImage.setImageWith(user!.picUrl!)
         screenName.text = "@\(user!.screenname!)"
         numTweets.text = String(user!.tweetCount!)
