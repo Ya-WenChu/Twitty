@@ -23,9 +23,9 @@ class TableViewCell: UITableViewCell {
     
     var tweet: Tweet!{
         didSet{
-            nameLabel.text = tweet.name
+            nameLabel.text = tweet.name!
             thumbimageView.setImageWith(tweet.profileImageUrl!)
-            screenLabel.text = tweet.screenName
+            screenLabel.text = "@\(tweet.screenName!)"
             descriptionLabel.text = tweet.text!
             favCount.text = ("\(tweet.favoritesCount)")
             retweetCount.text = ("\(tweet.retweetCount)")
@@ -44,6 +44,7 @@ class TableViewCell: UITableViewCell {
             }else{
                 favButton.setImage(UIImage(named: "favor-icon.png"), for: UIControlState.normal)
             }
+            
         }
         
     }

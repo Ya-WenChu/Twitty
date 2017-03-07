@@ -33,6 +33,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         }
         
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        window?.rootViewController = UITabBarController()
+        
+        
+        
+        
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let homeNavigationController = storyboard.instantiateViewController(withIdentifier: "TweetsNavigationController") as! UINavigationController
+
+        homeNavigationController.tabBarItem.title = "Home"
+        homeNavigationController.tabBarItem.image = UIImage(named: "home-icon")
+        
+        let profileViewController = storyboard.instantiateViewController(withIdentifier: "ProfileViewController")
+        profileViewController.tabBarItem.title = "Me"
+        profileViewController.tabBarItem.image = UIImage(named: "profile-icon" )
+        
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [homeNavigationController, profileViewController]
+        
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+        
         return true
     }
 

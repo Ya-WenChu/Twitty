@@ -18,6 +18,15 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let button = UIButton.init(type: .custom)
+        button.setImage(UIImage.init(named: "edit-icon@3x.png"), for: UIControlState.normal)
+        button.addTarget(self, action:#selector(TweetsViewController.callMethod), for: UIControlEvents.touchUpInside)
+        button.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
+        let barButton = UIBarButtonItem.init(customView: button)
+        self.navigationItem.leftBarButtonItem = barButton
+
+        
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -28,9 +37,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         TwitterClient.sharedInstance?.homeTimeLine(success: { (tweets: [Tweet]) in
             self.tweets = tweets
             self.tableView.reloadData()
-            /*for tweet in tweets{
-                print(tweet.text!)
-            }*/
+
         }, failure: { (error: NSError) in
             print(error.localizedDescription)
         })
@@ -38,6 +45,14 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view.
     }
 
+    func callMethod() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let composeVC = storyboard.instantiateViewController(withIdentifier: "ComposeViewController") as? ComposeViewController {
+            self.navigationController?.pushViewController(composeVC, animated: true)
+        }
+    }
+
+    
     override func viewWillAppear(_ animated: Bool) {
         TwitterClient.sharedInstance?.homeTimeLine(success: { (tweets: [Tweet]) in
             self.tweets = tweets
@@ -74,6 +89,11 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }else{
             return 0
         }
+    }
+    
+    
+    @IBAction func onLogout(_ sender: Any) {
+        TwitterClient.sharedInstance?.logout()
     }
     
     @IBAction func retweet(_ sender: Any) {
@@ -118,16 +138,29 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.reloadData()
     }
     
+    func profileImageViewTapped(cell: TableViewCell, user: User) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let profileVC = storyboard.instantiateViewController(withIdentifier: "UserProfileViewController") as? UserProfileViewController {
+            //profileVC.user = user
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
+    }
    
+    
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let navgivationController = segue.destination as! UINavigationController
+        let vc = navgivationController.topViewController as! DetailViewController
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)
+        let tweet = tweets[(indexPath?.row)!]
+        vc.tweet = tweet
+        
     }
-    */
+    
 
 }
